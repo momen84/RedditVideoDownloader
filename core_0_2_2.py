@@ -34,11 +34,9 @@ class ExternalSource(Error):
 class RedPost():
 	def __init__(self,json_script):
 		self.json_script = json_script
-		# print(self.json_script)
 		self.post_id=[x for x in json.loads(self.json_script).get('posts').get('models').keys()][0]
 		self.cross_post=json.loads(self.json_script).get('posts').get('models').get(self.post_id).get('crosspostParentId')
-		# self.post_id=self.checkCrossPost()
-		# print(self.post_id)
+		
 		self.post_attrs=[x for x in json.loads(json_script).get('posts').get('models').get(self.post_id).items()]
 		
 		self.removed_flag=json.loads(self.json_script).get('posts').get('models').get(self.post_id).get('removedByCategory')
@@ -60,39 +58,12 @@ class RedPost():
 			else:
 				self.getExternalMediaUrls()
 		
-		# print(f'Post Attributes={self.post_attrs}')
-		
-		# print(f'Post ID ={self.post_id}')
-		# print(f'Title ={self.post_title}')
-		# print(f'Removed flag={self.removed_flag}')
-		# print(f'Cross post to ={self.cross_post}')
-		# print(f'Thumbnail URL ={self.thumbnail}')
-		# print(f'NSFW Flag ={self.NSFW}')
-		# print(f'Media Type ={self.media_type}')
-		# print(f'Media URLs ={self.media_urls}')
-		# print(f'Media domain ={self.mediadomain}')
-
-		# print('Post ID ={}'.format(self.post_id))
-		# print('Title ={}'.format(self.post_title))
-		# print('Removed flag={}'.format(self.removed_flag))
-		# print('Cross post to ={}'.format(self.cross_post))
-		# print('Thumbnail URL ={}'.format(self.thumbnail))
-		# print('NSFW Flag ={}'.format(self.NSFW))
-		# print('Media Type ={}'.format(self.media_type))
-		# print('Media URLs ={}'.format(self.media_urls))
-		# print('Media domain ={}'.format(self.mediadomain))
-
-		# print(f'Source={source}')
-
 	def checkCrossPost(self):
 		if self.cross_post==self.post_id:
 			self.post_id=self.post_id	# else:
-		# 	print(f'Post hase been removed by : {self.removed_flag} , however we will try to download any ways')
-		# 	self.thumbnail = None
-
+		
 		
 	def getThumbnail(self):
-		# self.thumbnail=json.loads(self.json_script).get('posts').get('models').get(self.post_id).get('thumbnail').get('url')
 		if self.removed_flag==None:
 			try:
 				self.thumbnail=json.loads(self.json_script).get('posts').get('models').get(self.post_id).get('thumbnail').get('url')
@@ -108,7 +79,6 @@ class RedPost():
 					# self.thumbnail=json.loads(self.json_script).get('posts').get('models').get(self.post_id).get(self.cross_post).get('preview').get('url')
 					self.thumbnail=json.loads(self.json_script).get('posts').get('models').get(self.cross_post).get('preview').get('url')
 		else:
-			# print(f'Post hase been removed by : {self.removed_flag} , however we will try to download any ways')
 			print('Post hase been removed by : {} , however we will try to download any ways'.format(self.removed_flag))
 			self.thumbnail = None
 
@@ -373,20 +343,5 @@ def starterApi(url):
 		return {"links":post.download_files,"thumbnail":post.thumbnail}
 	except:
 		return 'Error ..... Post was hosted in Reddit but now deleted , cannot proceed'
-
-
-	# if dash_file is None:
-	# 	print('File links to conent outside reddit')
-	# 	download_files=dash_file_url
-
-	# elif dash_file=='Error':
-	# 	download_files='Error'
-		
-	# else:
-	# 	download_files=dash_processors.parse_video_dashUrl(dash_file,base_url)
-	# 	if len(download_files)==1:
-	# 		selected_file=download_files[0]
-			
-	# return download_files			
 
 
